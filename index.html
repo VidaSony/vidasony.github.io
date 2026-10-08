@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Статистика для медицинских работ</title>
+<meta name="description" content="Проверка расчетов в рукописях, пересчет по исходным данным, выбор метода, ответы рецензентам. Статистика для статей и диссертаций.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Статистика для медицинских работ">
+<meta property="og:description" content="Проверка и пересчет расчетов, выбор метода, ответы рецензентам. Telegram @vidana_stat">
+<meta property="og:image" content="https://vidasony.github.io/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://vidasony.github.io/og.jpg">
+<meta property="og:url" content="https://vidasony.github.io/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%231a6e78'/><path d='M8 23V15M14 23V9M20 23V13M26 23V18' stroke='white' stroke-width='3' stroke-linecap='round'/></svg>">
+<style>
+:root {
+  --bg: #f6f4ef;
+  --card: #ffffff;
+  --text: #1d2a33;
+  --muted: #5b6770;
+  --line: #e3dfd6;
+  --accent: #1a6e78;
+  --accent-text: #ffffff;
+  --accent-soft: #e2efef;
+  --head: #16344a;
+  --blob1: #c9e8e4;
+  --blob2: #fde2c8;
+  --blob3: #dbe4f8;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12181c;
+    --card: #1b2328;
+    --text: #e4e8ea;
+    --muted: #9aa6ad;
+    --line: #2c363c;
+    --accent: #4fb3bd;
+    --accent-text: #0e1417;
+    --accent-soft: #1f3337;
+    --head: #e9eef0;
+    --blob1: #17393d;
+    --blob2: #3a2a1c;
+    --blob3: #1d2740;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12181c;
+  --card: #1b2328;
+  --text: #e4e8ea;
+  --muted: #9aa6ad;
+  --line: #2c363c;
+  --accent: #4fb3bd;
+  --accent-text: #0e1417;
+  --accent-soft: #1f3337;
+  --head: #e9eef0;
+  --blob1: #17393d;
+  --blob2: #3a2a1c;
+  --blob3: #1d2740;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 8% 0%, var(--blob1) 0, transparent 38%),
+    radial-gradient(circle at 95% 12%, var(--blob2) 0, transparent 32%),
+    radial-gradient(circle at 15% 70%, var(--blob3) 0, transparent 35%),
+    radial-gradient(circle at 90% 95%, var(--blob1) 0, transparent 35%),
+    var(--bg);
+  background-attachment: fixed;
+  color: var(--text);
+  font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 16px; }
+h1, h2, h3 { color: var(--head); line-height: 1.25; margin: 0; }
+h2 { font-size: 28px; margin-bottom: 20px; }
+section { padding: 48px 0; border-top: 1px solid var(--line); }
+a { color: var(--accent); }
+
+/* первый экран */
+.hero { display: flex; gap: 40px; align-items: center; padding: 64px 0 56px; }
+.hero img { width: 160px; height: auto; border-radius: 12px; flex-shrink: 0; box-shadow: 0 8px 24px rgba(0,0,0,.15); }
+.hero h1 { font-size: 40px; }
+.hero .lead { font-size: 19px; color: var(--muted); margin: 14px 0 24px; }
+.buttons { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn {
+  display: inline-block; padding: 12px 22px; border-radius: 10px;
+  font-weight: 600; text-decoration: none; border: 2px solid var(--accent);
+}
+.btn.main { background: var(--accent); color: var(--accent-text); }
+.btn.alt { color: var(--accent); }
+
+/* услуги */
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+.card h3 { font-size: 18px; margin-bottom: 6px; }
+.card p { margin: 0; color: var(--muted); font-size: 16px; }
+
+/* цены */
+table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+td { padding: 14px 20px; border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: none; }
+td.price { text-align: right; white-space: nowrap; font-weight: 600; color: var(--head); }
+.note { color: var(--muted); margin: 14px 0 0; }
+
+/* шаги */
+.steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: step; }
+.steps li { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; counter-increment: step; }
+.steps li::before {
+  content: counter(step); display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%; background: var(--accent-soft); color: var(--accent);
+  font-weight: 700; margin-bottom: 10px;
+}
+.privacy { margin-top: 20px; padding: 16px 20px; border-radius: 14px; background: var(--accent-soft); }
+
+/* о себе */
+.about { display: flex; gap: 32px; align-items: flex-start; }
+.about-photos { display: flex; flex-direction: column; gap: 12px; flex-shrink: 0; }
+.about img { width: 160px; height: 160px; border-radius: 12px; object-fit: cover; }
+.about p { margin: 0 0 14px; }
+.about h3 { font-size: 18px; margin: 20px 0 8px; }
+.courses { margin: 0; padding-left: 20px; }
+.courses span { color: var(--muted); }
+
+/* контакты */
+.contacts { text-align: center; }
+.contacts p { color: var(--muted); margin: 0 0 24px; }
+.contacts .buttons { justify-content: center; }
+footer { padding: 24px 0 40px; color: var(--muted); font-size: 14px; text-align: center; }
+
+@media (max-width: 700px) {
+  .hero { flex-direction: column; text-align: center; padding: 40px 0; gap: 24px; }
+  .hero img { width: 140px; }
+  .hero h1 { font-size: 30px; }
+  .hero .buttons { justify-content: center; }
+  .grid, .steps { grid-template-columns: 1fr; }
+  .about { flex-direction: column; align-items: center; }
+  .about img { width: 140px; height: 140px; }
+  h2 { font-size: 24px; }
+  td { padding: 12px 14px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <img src="foto.jpg" alt="Видана Владимировна">
+    <div>
+      <h1>Статистика для медицинских работ</h1>
+      <p class="lead">Проверю расчеты, пересчитаю по исходным данным, подберу метод. Для статей, диссертаций и ответов рецензентам.</p>
+      <div class="buttons">
+        <a class="btn main" href="https://t.me/vidana_stat">Написать в Telegram</a>
+        <a class="btn alt mail" href="#kontakty">Написать на почту</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="uslugi">
+    <h2>Что я делаю</h2>
+    <div class="grid">
+      <div class="card"><h3>Проверка расчетов в рукописи</h3><p>Сходятся ли числа в таблицах и тексте, верны ли интервалы, p и проценты.</p></div>
+      <div class="card"><h3>Пересчет по исходным данным</h3><p>Считаю заново по вашей таблице и показываю, что изменилось.</p></div>
+      <div class="card"><h3>Выбор метода</h3><p>Какой критерий или модель подходит к вашей задаче и вашим данным.</p></div>
+      <div class="card"><h3>Описательная статистика и сравнение групп</h3><p>Доли, средние, медианы с интервалами, отношения шансов.</p></div>
+      <div class="card"><h3>ROC-анализ, шкалы, номограммы</h3><p>Прогностические шкалы, пороги, чувствительность и специфичность, деревья решений.</p></div>
+      <div class="card"><h3>Множественные сравнения</h3><p>Поправки, когда признаков или групп много.</p></div>
+      <div class="card"><h3>Ответы рецензентам</h3><p>Разбор замечаний по статистике и готовый текст ответа.</p></div>
+      <div class="card"><h3>Таблицы, рисунки, описание методов</h3><p>Оформление результатов и текст о статистических методах для статьи.</p></div>
+    </div>
+  </section>
+
+  <section id="ceny">
+    <h2>Цены</h2>
+    <table>
+      <tr><td>Консультация по выбору метода</td><td class="price">от 3&nbsp;000 ₽</td></tr>
+      <tr><td>Ответ рецензенту по статистике</td><td class="price">от 5&nbsp;000 ₽</td></tr>
+      <tr><td>Проверка статистики в статье или рукописи</td><td class="price">от 8&nbsp;000 ₽</td></tr>
+      <tr><td>Расчеты для статьи по готовым данным</td><td class="price">от 15&nbsp;000 ₽</td></tr>
+      <tr><td>Статистика к диссертации</td><td class="price">от 40&nbsp;000 ₽</td></tr>
+    </table>
+    <p class="note">Точная цена зависит от объема данных и задачи. Скидки по договоренности.</p>
+  </section>
+
+  <section id="kak">
+    <h2>Как работаем</h2>
+    <ol class="steps">
+      <li>Вы присылаете файл с данными или рукопись и описываете задачу.</li>
+      <li>Я оцениваю объем и называю срок и цену.</li>
+      <li>Вы получаете результат и пояснение, как считалось. Вопросы по расчетам после сдачи — бесплатно.</li>
+    </ol>
+    <p class="privacy">Данные и рукописи никому не передаю.</p>
+  </section>
+
+  <section id="obo-mne">
+    <h2>Обо мне</h2>
+    <div class="about">
+      <div class="about-photos">
+        <img src="foto2.jpg" alt="Видана Владимировна">
+      </div>
+      <div>
+        <p><strong>Видана Владимировна</strong>, математик. Окончила государственный университет по специальности «Прикладная математика», дипломная работа «Нелинейная фильтрация на примере модифицированного гармонического фильтра».</p>
+        <p>С 2001 года программист, с 2004 года программист и старший программист финансово-учетных систем, сейчас программист на производственном предприятии. Преподавала в вузе. Первую медицинскую работу посчитала более 20 лет назад.</p>
+        <p>Расчеты делаю на Python: каждый шаг записан и повторяется.</p>
+        <h3>Курсы</h3>
+        <ul class="courses">
+          <li>Машинное обучение и анализ данных <span>— МФТИ, Яндекс</span></li>
+          <li>Математика и Python для анализа данных <span>— МФТИ, Яндекс</span></li>
+          <li>SQL for Data Science <span>— IBM</span></li>
+          <li>Визуализация данных в Tableau <span>— Tableau.pro</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontakty" class="contacts">
+    <h2>Контакты</h2>
+    <p>Напишите, что нужно посчитать или проверить. Отвечу в течение дня.</p>
+    <div class="buttons">
+      <a class="btn main" href="https://t.me/vidana_stat">Telegram @vidana_stat</a>
+      <a class="btn alt mail" href="#kontakty" data-show="1">Почта</a>
+    </div>
+  </section>
+
+</div>
+<footer>© Видана Владимировна, 2026</footer>
+<script>
+// адрес собирается в браузере, чтобы его не находили сборщики адресов для спама
+(function () {
+  var a = ['vidana', 'stat'].join('.') + String.fromCharCode(64) + ['gmail', 'com'].join('.');
+  document.querySelectorAll('a.mail').forEach(function (el) {
+    el.href = 'mailto:' + a;
+    if (el.dataset.show) el.textContent = a;
+  });
+})();
+</script>
+</body>
+</html>
