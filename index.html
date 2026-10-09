@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Статистика для медицинских работ</title>
-<meta name="description" content="Проверка расчетов в рукописях, пересчет по исходным данным, выбор метода, ответы рецензентам. Статистика для статей и диссертаций.">
+<meta name="description" content="Статистическая обработка данных для медицинских статей и диссертаций: проверка расчетов, пересчет, выбор метода, ответы рецензентам.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Статистика для медицинских работ">
 <meta property="og:description" content="Проверка и пересчет расчетов, выбор метода, ответы рецензентам. Telegram @vidana_stat">
@@ -98,6 +98,7 @@ a { color: var(--accent); }
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
 .card h3 { font-size: 18px; margin-bottom: 6px; }
 .card p { margin: 0; color: var(--muted); font-size: 16px; }
+.grid .card:last-child:nth-child(odd) { grid-column: 1 / -1; }
 
 /* цены */
 table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
@@ -168,9 +169,11 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 14px; text-align:
       <div class="card"><h3>Описательная статистика и сравнение групп</h3><p>Доли, средние, медианы с интервалами, отношения шансов.</p></div>
       <div class="card"><h3>ROC-анализ, шкалы, номограммы</h3><p>Прогностические шкалы, пороги, чувствительность и специфичность, деревья решений.</p></div>
       <div class="card"><h3>Множественные сравнения</h3><p>Поправки, когда признаков или групп много.</p></div>
-      <div class="card"><h3>Ответы рецензентам</h3><p>Разбор замечаний по статистике и готовый текст ответа.</p></div>
       <div class="card"><h3>Таблицы, рисунки, описание методов</h3><p>Оформление результатов и текст о статистических методах для статьи.</p></div>
+      <div class="card"><h3>Ответы рецензентам</h3><p>Разбор замечаний по статистике и готовый текст ответа.</p></div>
+      <div class="card"><h3>Рецензирование для журналов</h3><p>Статистическая рецензия рукописи по запросу редакции: подходят ли методы, сходятся ли числа, следуют ли выводы из расчетов.</p></div>
     </div>
+    <p class="note">Рукописи проверяю по международным рекомендациям: SAMPL (описание статистики), CONSORT (рандомизированные испытания), STROBE (наблюдательные исследования), TRIPOD (прогностические модели и шкалы).</p>
   </section>
 
   <section id="primery">
@@ -202,7 +205,7 @@ footer { padding: 24px 0 40px; color: var(--muted); font-size: 14px; text-align:
       <li>Я оцениваю объем и называю срок и цену.</li>
       <li>Вы получаете результат и пояснение, как считалось. Вопросы по расчетам после сдачи — бесплатно.</li>
     </ol>
-    <p class="privacy">Данные и рукописи никому не передаю.</p>
+    <p class="privacy">Данные и рукописи никому не передаю. Таблицы присылайте без ФИО: для расчетов они не нужны.</p>
   </section>
 
   <section id="obo-mne">
